@@ -15,8 +15,8 @@ class NotesHandler {
   async postAlbumHandler(request, h) {
     try {
       this._validator.validateNotePayload(request.payload);
-      const { title, year, genre, performer, duration, albumId } = request.payload;
-      const albumId = await this._service.addAlbum({title, year, genre, performer, duration, albumId});
+      const { name, year } = request.payload;
+      const albumId = await this._service.addAlbum({name, year});
 
       const response = h.response({
         status: 'success',
