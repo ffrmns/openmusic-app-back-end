@@ -54,7 +54,7 @@ class SongsHandler {
 	title,
 	performer,
       } = song;
-      songsList.push({id: id, title: title, performer: performer});
+      songsList.push({ id, title, performer });
     });
     return {
       status: 'success',

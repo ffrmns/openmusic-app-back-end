@@ -37,6 +37,18 @@ class AlbumsService {
     if (!result.rows.length) {
       throw new NotFoundError('Album tidak ditemukan.');
     };
+    const row = result.rows[0];
+    const songInAlbumQuery = {
+      text: 'SELECT * FROM songs',
+    };
+    const songInAlbumResult = await this._pool.query(songInAlbumQuery);
+    const songsDataToBeInserted = []
+    songInAlbumResult.rows.map((songData) => {
+      const {id, title, performer } = songData;
+      songsDataToBeInserted.push({ id, title, performer });
+    });
+    row.songs = songsDataToBeInserted;
+
     return result.rows[0];
   }
 
