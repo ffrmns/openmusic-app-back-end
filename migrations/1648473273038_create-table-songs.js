@@ -13,7 +13,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     year: {
-      type: 'TEXT',
+      type: 'SMALLINT',
       notNull: true,
     },
     performer: {
@@ -25,7 +25,7 @@ exports.up = (pgm) => {
       notNull: true,
     },
     duration: {
-      type: 'TEXT',
+      type: 'SMALLINT',
     },
     album_id: {
       type: 'TEXT',

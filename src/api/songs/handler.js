@@ -47,10 +47,19 @@ class SongsHandler {
 
   async getSongsHandler() {
     const songs = await this._service.getSongs();
+    const songsList = [];
+    songs.map((song) => {
+      const {
+	id,
+	title,
+	performer,
+      } = song;
+      songsList.push({id: id, title: title, performer: performer});
+    });
     return {
       status: 'success',
       data: {
-        songs,
+	songs: songsList,
       },
     };
   }
@@ -62,7 +71,7 @@ class SongsHandler {
       return {
         status: 'success',
         data: {
-          song,
+	  song,
 	},
       };
     } catch (error) {
@@ -118,7 +127,7 @@ class SongsHandler {
   async deleteSongByIdHandler(request, h) {
     try {
       const { id } = request.params;
-      await this._service.deleteNoteById(id);
+      await this._service.deleteSongById(id);
 
       return {
         status: 'success',
