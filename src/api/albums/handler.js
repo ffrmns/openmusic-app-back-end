@@ -1,6 +1,6 @@
 const ClientError = require('../../exceptions/ClientError');
 
-class NotesHandler {
+class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
@@ -30,7 +30,7 @@ class NotesHandler {
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: 'fail';
+          status: 'fail',
           message: error.message,
 	});
         response.code(error.statusCode);
@@ -48,11 +48,11 @@ class NotesHandler {
   }
 
   async getAlbumsHandler() {
-    const notes = await this._service.getAlbums();
+    const albums = await this._service.getAlbums();
     return {
       status: 'success',
       data: {
-        albums
+        albums,
       },
     };
   }

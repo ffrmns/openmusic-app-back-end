@@ -15,11 +15,10 @@ class SongsHandler {
   async postSongHandler(request, h) {
     try{
       this._validator.validateSongPayload(request.payload);
-      const { title, year, genre, performer, duration, albumId } = request.payload;
-      const songId = await this._service.addSong({title, year, genre, performer, duration, albumId});
+      const { title, year, performer, genre, duration, albumId } = request.payload;
+      const songId = await this._service.addSong({title, year, performer, genre, duration, albumId});
       const response = h.response({
         status: 'success',
-        message: 'Lagu berhasil ditambahkan.',
         data: {
           songId,
 	},
@@ -29,8 +28,8 @@ class SongsHandler {
     } catch (error) {
       if (error instanceof ClientError) {
         const response = h.response({
-          status: 'fail';
-          message: error.message;
+          status: 'fail',
+          message: error.message,
 	});
         response.code(error.statusCode);
         return response;
