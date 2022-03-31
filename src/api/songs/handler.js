@@ -45,7 +45,9 @@ class SongsHandler {
     }
   }
 
-  async getSongsHandler() {
+  async getSongsHandler(request) {
+    const { title: titleQuery, performer:performerQuery } = request.query;
+
     const songs = await this._service.getSongs();
     const songsList = [];
     songs.map((song) => {
@@ -54,7 +56,21 @@ class SongsHandler {
 	title,
 	performer,
       } = song;
-      songsList.push({ id, title, performer });
+      const isNoQuery = !titleQuery && !performerQuery;
+      let isTitleMatch, isPerformerMatch;
+      if (titleQuery) {
+	isTitleMatch = title.toLowerCase().includes(titleQuery.toLowerCase());
+      }
+      if (performerQuery) {
+	isPerformerMatch = performer.toLowerCase().includes(performerQuery.toLowerCase());
+      }
+
+      if (isNoQuery 
+	|| (isTitleMatch  && !performerQuery)
+	|| (isPerformerMatch  && !titleQuery)
+	|| (isPerformerMatch && isTitleMatch)) {
+	songsList.push({ id, title, performer });	  
+      };
     });
     return {
       status: 'success',
@@ -65,7 +81,7 @@ class SongsHandler {
   }
 
   async getSongByIdHandler(request, h) {
-    try {
+    try { 
       const { id } = request.params;
       const song = await this._service.getSongById(id);
       return {
