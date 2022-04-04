@@ -14,7 +14,7 @@ class UsersService {
     const id = `user-${nanoid(16)}`;
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING is',
+      text: 'INSERT INTO users VALUES($1, $2, $3, $4) RETURNING id',
       values: [id, username, hashedPassword, fullname],
     };
     const result = await this.pool.query(query);
