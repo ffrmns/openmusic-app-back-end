@@ -5,8 +5,9 @@ const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class PlaylistsService {
-  constructor() {
+  constructor(collaborationService) {
     this.pool = new Pool();
+    this.collaborationService = collaborationService;
   }
 
   async addPlaylist({ name, owner }) {
@@ -106,6 +107,21 @@ class PlaylistsService {
     };
     const songsResult = await this.pool.query(songsQuery);
     if (!songsResult.rows.length) throw new NotFoundError('Tidak dapat dimasukkan, lagu tidak ada.');
+  }
+
+  async verifyPlaylistAccess(playlistId, userId) {
+    try {
+      await this.verifyPlaylistOwner(playlistId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      try {
+        await this.collaborationService.verifyCollaborator(playlistId, userId);
+      } catch {
+        throw error;
+      }
+    }
   }
 }
 
