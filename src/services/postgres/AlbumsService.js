@@ -34,7 +34,8 @@ class AlbumsService {
     }
     const row = result.rows[0];
     const songInAlbumQuery = {
-      text: 'SELECT * FROM songs',
+      text: 'SELECT * FROM songs WHERE album_id = $1',
+      values: [id],
     };
     const songInAlbumResult = await this.pool.query(songInAlbumQuery);
     const songsDataToBeInserted = [];
