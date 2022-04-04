@@ -27,7 +27,7 @@ class UsersService {
   async verifyNewUsername(username) {
     const query = {
       text: 'SELECT username from users WHERE username = $1',
-      value: [username],
+      values: [username],
     };
     const result = await this.pool.query(query);
     if (result.rows.length) {
@@ -38,7 +38,7 @@ class UsersService {
   async verifyUserCredential(username, password) {
     const query = {
       text: 'SELECT id, password FROM users WHERE username = $1',
-      value: [username],
+      values: [username],
     };
     const result = await this.pool.query(query);
     if (!result.rows.length) {

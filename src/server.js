@@ -37,7 +37,7 @@ const init = async () => {
   });
 
   await server.register({
-      plugin: Jwt,
+    plugin: Jwt,
   });
 
   server.auth.strategy('openmusic_jwt', 'jwt', {
@@ -51,7 +51,7 @@ const init = async () => {
     validate: (artifacts) => ({
       isValid: true,
       credentials: {
-	id: artifacts.decoded.payload.id,
+        id: artifacts.decoded.payload.id,
       },
     }),
   });
