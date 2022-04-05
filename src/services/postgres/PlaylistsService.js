@@ -24,11 +24,18 @@ class PlaylistsService {
   }
 
   async getPlaylists(owner) {
-    const query = {
+    let query = {
       text: 'SELECT playlists.id, playlists.name, users.username FROM playlists INNER JOIN users ON playlists.owner = users.id WHERE playlists.owner = $1',
       values: [owner],
     };
-    const result = await this.pool.query(query);
+    let result = await this.pool.query(query);
+    if (!result.rows.length) {
+      query = {
+        text: 'SELECT playlists.id, playlists.name, users.username FROM playlists INNER JOIN collaborations ON playlists.id = collaborations.playlist_id INNER JOIN users ON users.id = playlists.owner WHERE collaborations.user_id = $1',
+        values: [owner],
+      };
+      result = await this.pool.query(query);
+    }
     return result.rows;
   }
 

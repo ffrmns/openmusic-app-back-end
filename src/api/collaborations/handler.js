@@ -1,4 +1,4 @@
-const { ClientError } = require('../../exceptions/ClientError');
+const ClientError = require('../../exceptions/ClientError');
 
 class CollaborationsHandler {
   constructor(collaborationsService, playlistsService, validator) {
@@ -16,7 +16,7 @@ class CollaborationsHandler {
       const { id: credentialId } = request.auth.credentials;
       const { playlistId, userId } = request.payload;
       await this.playlistsService.verifyPlaylistOwner(playlistId, credentialId);
-      const collaborationId = await this.collaborationsService.addColaboration(playlistId, userId);
+      const collaborationId = await this.collaborationsService.addCollaboration(playlistId, userId);
       const response = h.response({
         status: 'success',
         data: {
