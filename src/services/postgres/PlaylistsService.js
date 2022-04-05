@@ -63,7 +63,7 @@ class PlaylistsService {
     }
   }
 
-  async getSongsByPlaylistId(id) {
+  async getSongsInPlaylist(id) {
     const playlistQuery = {
       text: 'SELECT playlists.id, playlists.name, users.username FROM playlists INNER JOIN users ON playlists.owner = users.id WHERE playlists.id = $1',
       values: [id],
@@ -81,7 +81,7 @@ class PlaylistsService {
     return playlistRows;
   }
 
-  async deleteSongByPlaylistId(playlistId, { songId }) {
+  async deleteSongInPlaylist(playlistId, { songId }) {
     const query = {
       text: 'DELETE FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
       values: [playlistId, songId],
