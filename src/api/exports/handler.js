@@ -14,7 +14,6 @@ class ExportsHandler {
     this.validator.validateExportSongsInPlaylistPayload(payload);
 
     const message = {
-      userId,
       playlistId,
       targetEmail: payload.targetEmail,
     };
