@@ -15,6 +15,7 @@ class ExportsHandler {
 
     const message = {
       userId,
+      playlistId,
       targetEmail: payload.targetEmail,
     };
     await this.ProducerService.sendMessage('export:songsInPlaylist', JSON.stringify(message));
