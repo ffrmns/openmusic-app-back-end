@@ -19,7 +19,7 @@ class StorageService {
       fileStream.on('error', (error) => reject(error));
       file.pipe(fileStream);
       file.on('end', () => resolve(filename));
-    })
+    });
   }
 }
 
