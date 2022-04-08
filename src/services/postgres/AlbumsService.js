@@ -34,17 +34,11 @@ class AlbumsService {
     }
     const row = result.rows[0];
     const songInAlbumQuery = {
-      text: 'SELECT * FROM songs WHERE album_id = $1',
+      text: 'SELECT id, title, performer FROM songs WHERE album_id = $1',
       values: [id],
     };
     const songInAlbumResult = await this.pool.query(songInAlbumQuery);
-    const songsDataToBeInserted = [];
-    songInAlbumResult.rows.map((songData) => {
-      const { id: idData, title, performer } = songData;
-      songsDataToBeInserted.push({ idData, title, performer });
-      return songsDataToBeInserted;
-    });
-    row.songs = songsDataToBeInserted;
+    row.songs = songInAlbumResult.rows;
 
     return result.rows[0];
   }
