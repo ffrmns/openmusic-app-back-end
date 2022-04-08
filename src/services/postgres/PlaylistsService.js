@@ -52,7 +52,7 @@ class PlaylistsService {
 
   async addSongToPlaylist(playlistId, { songId }) {
     await this.verifySongExistence(songId);
-    const id = nanoid(16);
+    const id = `playlist_song-${nanoid(16)}`;
     const query = {
       text: 'INSERT INTO playlist_songs VALUES($1, $2, $3) RETURNING id',
       values: [id, playlistId, songId],
@@ -132,7 +132,7 @@ class PlaylistsService {
   }
 
   async addPlaylistActivity(playlistId, songId, userId, action) {
-    const id = nanoid(16);
+    const id = `activity-${nanoid(16)}`;
     const query = {
       text: 'INSERT INTO playlist_song_activities VALUES($1, $2, $3, $4, $5) RETURNING id',
       values: [id, playlistId, songId, userId, action],
