@@ -1,7 +1,3 @@
-/* eslint-disable camelcase */
-
-exports.shorthands = undefined;
-
 exports.up = (pgm) => {
   pgm.sql("INSERT INTO users(id, username, password, fullname) VALUES ('no_user', 'no_user', 'no_user', 'no_user')");
   pgm.sql("UPDATE playlists SET owner = 'no_user' WHERE owner = NULL");
