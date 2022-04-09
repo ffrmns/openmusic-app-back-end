@@ -9,6 +9,8 @@ class AlbumsHandler {
     this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
     this.postCoverInAlbumHandler = this.postCoverInAlbumHandler.bind(this);
+    this.postLikeInAlbumHandler = this.postLikeInAlbumHandler.bind(this);
+    this.getLikesInAlbumHandler = this.getLikesInAlbumHandler.bind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -78,6 +80,27 @@ class AlbumsHandler {
     });
     response.code(201);
     return response;
+  }
+
+  async postLikeInAlbumHandler({ params, auth }, h) {
+    const { id: userId } = auth.credentials;
+    await this.albumsService.postLikeInAlbum(params.id, userId);
+    const response = h.response({
+      status: 'success',
+      message: 'Berhasil menambah like',
+    });
+    response.code(201);
+    return response;
+  }
+
+  async getLikesInAlbumHandler({ params }) {
+    const likesCount = await this.albumsService.getLikesInAlbum(params.id);
+    return {
+      status: 'success',
+      data: {
+        likes: likesCount,
+      },
+    };
   }
 }
 
