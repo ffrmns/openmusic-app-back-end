@@ -93,14 +93,16 @@ class AlbumsHandler {
     return response;
   }
 
-  async getLikesInAlbumHandler({ params }) {
-    const likesCount = await this.albumsService.getLikesInAlbum(params.id);
-    return {
+  async getLikesInAlbumHandler({ params }, h) {
+    const { count, isCache } = await this.albumsService.getLikesInAlbum(params.id);
+    const response = h.response({
       status: 'success',
       data: {
-        likes: likesCount,
+        likes: count,
       },
-    };
+    });
+    if (isCache) response.header('X-Data-Source', 'cache');
+    return response;
   }
 }
 
