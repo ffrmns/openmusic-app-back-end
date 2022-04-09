@@ -5,9 +5,10 @@ const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class PlaylistsService {
-  constructor(collaborationService) {
+  constructor(collaborationService, songsService) {
     this.pool = new Pool();
     this.collaborationService = collaborationService;
+    this.songsService = songsService;
   }
 
   async addPlaylist({ name, owner }) {
@@ -51,7 +52,7 @@ class PlaylistsService {
   }
 
   async addSongToPlaylist(playlistId, { songId }) {
-    await this.verifySongExistence(songId);
+    await this.songsService.getSongById(songId);
     const id = `playlist_song-${nanoid(16)}`;
     const query = {
       text: 'INSERT INTO playlist_songs VALUES($1, $2, $3) RETURNING id',
@@ -105,15 +106,6 @@ class PlaylistsService {
     if (playlist.owner !== owner) {
       throw new AuthorizationError('Maaf, Anda tidak berhak mengakses, bukan pemilik playlist ini.');
     }
-  }
-
-  async verifySongExistence(songId) {
-    const songsQuery = {
-      text: 'SELECT * FROM songs WHERE id = $1',
-      values: [songId],
-    };
-    const songsResult = await this.pool.query(songsQuery);
-    if (!songsResult.rows.length) throw new NotFoundError('Tidak dapat dimasukkan, lagu tidak ada.');
   }
 
   async verifyPlaylistAccess(playlistId, userId) {
