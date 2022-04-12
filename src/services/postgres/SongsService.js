@@ -38,7 +38,7 @@ class SongsService {
       if (performer) query = query.concat(` LOWER(performer) LIKE LOWER('%${performer}%')`);
     }
     const result = await this.pool.query(query);
-    return result.rows.map(mapSongsDBToModel);
+    return result.rows;
   }
 
   async getSongById(id) {
